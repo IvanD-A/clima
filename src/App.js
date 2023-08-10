@@ -10,23 +10,30 @@ function App() {
   const [coordenadas,setCoordenadas] = useState([-17.3895, -66.1568])
   const [predicciones,setPredicciones] = useState({'1628457600000':18,'1577923200000':20})
   const api = axios.create({
-    baseURL:"localhost:8000"
+    baseURL:"http://localhost:8000"
   })
   const services = {
     arimaTemperatura:async()=>{
       let resultado = null
-      await api.get("/predictions/arima", {
-        lat:coordenadas[0],
-        log:coordenadas[1]
+      await api.post("/predictions/arima", {
+        lat: coordenadas[0],
+        lon: coordenadas[1]
       }).then((res)=>{
+        console.log(res);
         resultado = res
+      }).catch(err => {
+        console.log(err);
+        resultado = err
       })
       return resultado
     }
   }
   const predecir =async()=>{
-    let prediccion = await services.arimaTemperatura().data
-    setPredicciones(prediccion)
+    await services.arimaTemperatura().then(res => {
+      setPredicciones(res.data)
+
+    })
+
   }
   return (
     <div className='d-flex'>
