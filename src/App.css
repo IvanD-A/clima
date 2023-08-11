@@ -38,6 +38,7 @@ h1{
   display: flex;
   flex-direction: column;
   background-color: #ebeacd;
+  align-items: center;
 
   border: 1px solid #515150;
   border-radius: 5px;
@@ -49,9 +50,7 @@ h1{
   font-size: 18px;
   color: #333;
   text-align: center;
-}
-.row {
-  display: flex;
+  min-width: 20vw
 }
 
 .ms-1{

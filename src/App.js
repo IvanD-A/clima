@@ -8,29 +8,35 @@ import axios from 'axios';
 function App() {
 
   const [coordenadas,setCoordenadas] = useState([-17.3895, -66.1568])
-  const [predicciones,setPredicciones] = useState({'1628457600000':18,'1577923200000':20})
+  const [predicciones,setPredicciones] = useState({})
+  const [loading, setLoading] = useState(false)
+  const [missingData, setMissingData] = useState(false)
   const api = axios.create({
     baseURL:"http://localhost:8000"
   })
   const services = {
-    arimaTemperatura:async()=>{
+    arimaTemperatura:async() => {
+      setMissingData(false)
+      setLoading(true);
       let resultado = null
       await api.post("/predictions/arima", {
         lat: coordenadas[0],
         lon: coordenadas[1]
       }).then((res)=>{
-        console.log(res);
-        resultado = res
+        resultado = res.data
+        setLoading(false);
       }).catch(err => {
         console.log(err);
-        resultado = err
+        setMissingData(true)
+        setLoading(false);
+        resultado = {}
       })
       return resultado
     }
   }
   const predecir =async()=>{
     await services.arimaTemperatura().then(res => {
-      setPredicciones(res.data)
+        setPredicciones(res)
     })
   }
 
@@ -45,9 +51,9 @@ function App() {
   const diasSemana = ["Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sabado"]
 
   return (
-    <div className='d-flex'>
-      <h1>Juapi el Meteorologo</h1>
-      <div className="row">
+    <div className=''>
+      <h1>Pedrito el Meteorologo</h1>
+      <div className="d-flex">
           <div className="coordinates-column">
             <h2>Coordenadas Actuales</h2>
             <input value={coordenadas[0]} disabled></input>
@@ -59,20 +65,28 @@ function App() {
           <div className="temperatures-column">
           <h2>Fecha Y Temperatura</h2>
             {
-              Object.keys(predicciones).map((fecha)=>{
-                return (
-                  <div className='centrado-vertical'>
-                    <input type="text" value={formatearFecha(new Date(parseInt(fecha)))} />
-                    <input className="ms-1" type="text" value={predicciones[fecha]+ "°"} />
-                    <img
-                      src="https://www.svgrepo.com/show/513351/sun.svg"
-                      alt="Ícono de sol"
-                      width="15"
-                      height="15"
-                    />
-                  </div>
-                )
-              })
+              missingData ? 
+                <h2>Sin datos de la ubicacion</h2>
+              :
+              loading ?
+                <div class="spinner-border" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              :
+                Object.keys(predicciones).map((fecha)=>{
+                  return (
+                    <div className='centrado-vertical'>
+                      <input readOnly type="text" value={formatearFecha(new Date(parseInt(fecha)))} />
+                      <input readOnly className="ms-1" type="text" value={predicciones[fecha]+ "°"} />
+                      <img
+                        src="https://www.svgrepo.com/show/513351/sun.svg"
+                        alt="Ícono de sol"
+                        width="15"
+                        height="15"
+                      />
+                    </div>
+                  )
+                })
             }
           </div>
         </div>
