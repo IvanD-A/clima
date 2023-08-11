@@ -1,4 +1,60 @@
 .leaflet-container{
-  width: 80vw;
-  height: 100vh;
+  flex: 1;
+  height: 90vh;
+
+  border: 3px solid #716435;
+  border-radius: 7px;
+
+  box-shadow: 2px 2px 5px rgba(191, 252, 85, 0.2);
+  margin: 0px 1rem ;
+}
+
+.coordinates-column{
+  display: flex;
+  flex-direction: column;
+  background-color: #ebeacd;
+
+  border: 1px solid #515150;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.coordinates-column h2 {
+  margin-bottom: 10px;
+  font-size: 18px;
+  color: #333;
+}
+
+h1{
+  font-family: monospace;
+  color: rgb(77, 64, 100);
+  text-align: center;
+  background-color: #ebeacd;
+  border: 1px solid #515150;
+  margin-top: 0px;
+}
+
+.temperatures-column{
+  display: flex;
+  flex-direction: column;
+  background-color: #ebeacd;
+
+  border: 1px solid #515150;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.temperatures-column h2{
+  margin-bottom: 10px;
+  font-size: 18px;
+  color: #333;
+  text-align: center;
+}
+.row {
+  display: flex;
+}
+
+.ms-1{
+  margin-left: 5px;
+  margin-bottom: 2.5px;
 }

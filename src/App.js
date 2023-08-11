@@ -31,32 +31,47 @@ function App() {
   const predecir =async()=>{
     await services.arimaTemperatura().then(res => {
       setPredicciones(res.data)
-
     })
-
   }
+
+  const formatearFecha = (date)=>{
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const diaSemana = date.getDay()
+    return `${diasSemana[diaSemana]}-${year}-${month}-${day}`;
+  }
+
+  const diasSemana = ["Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sabado"]
+
   return (
     <div className='d-flex'>
-      <div>
-        <MapView coordenadas={coordenadas} setCoordenadas={setCoordenadas}/>
-        <input value={coordenadas[0]} disabled></input>
-        <input value={coordenadas[1]} disabled></input>
-        <button onClick={predecir}>Predecir</button>
-      </div>
-      <div>
-        {
-          Object.keys(predicciones).map((fecha)=>{
-            return (
-              <div>
-                <input type="text" value={new Date(parseInt(fecha))} />
-                <input type="text" value={predicciones[fecha]} />
-              </div>
-            )
-          })
-        }
+      <h1>Juapi el Meteorologo</h1>
+      <div className="row">
+          <div className="coordinates-column">
+            <h2>Coordenadas Actuales</h2>
+            <input value={coordenadas[0]} disabled></input>
+            <input value={coordenadas[1]} disabled></input>
+            <button onClick={predecir}>Predecir</button>
+          </div>
+          <MapView coordenadas={coordenadas} setCoordenadas={setCoordenadas}/>
+        <div>
+          <div className="temperatures-column">
+          <h2>Fecha Y Temperatura</h2>
+            {
+              Object.keys(predicciones).map((fecha)=>{
+                return (
+                  <div>
+                    <input type="text" value={formatearFecha(new Date(parseInt(fecha)))} />
+                    <input className="ms-1" type="text" value={predicciones[fecha]+ "°"} />
+                  </div>
+                )
+              })
+            }
+          </div>
+        </div>
       </div>
     </div>
-
   );
 }
 
