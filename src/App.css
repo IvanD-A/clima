@@ -56,5 +56,10 @@ h1{
 
 .ms-1{
   margin-left: 5px;
+}
+
+.centrado-vertical{
   margin-bottom: 2.5px;
+  display: flex;
+  align-items: center;
 }

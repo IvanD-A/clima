@@ -61,9 +61,15 @@ function App() {
             {
               Object.keys(predicciones).map((fecha)=>{
                 return (
-                  <div>
+                  <div className='centrado-vertical'>
                     <input type="text" value={formatearFecha(new Date(parseInt(fecha)))} />
                     <input className="ms-1" type="text" value={predicciones[fecha]+ "°"} />
+                    <img
+                      src="https://www.svgrepo.com/show/513351/sun.svg"
+                      alt="Ícono de sol"
+                      width="15"
+                      height="15"
+                    />
                   </div>
                 )
               })
